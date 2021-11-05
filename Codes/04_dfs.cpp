@@ -8,6 +8,21 @@ class Graph
   int V;
   list<int> *l;
 
+  void dfsHelper(int node, bool *visited)
+  {
+    visited[node] = true;
+    cout << node << ",";
+    // make a dfs call on all its unvisited neighbors
+    for (auto nbr : l[node])
+    {
+      if (!visited[nbr])
+      {
+        dfsHelper(nbr, visited);
+      }
+    }
+    return;
+  }
+
 public:
   Graph(int v)
   {
@@ -24,29 +39,10 @@ public:
     }
   }
 
-  void bfs(int source)
+  void dfs(int source)
   {
-    queue<int> q;
     bool *visited = new bool[V]{0};
-
-    q.push(source);
-    visited[source] = true;
-
-    while (!q.empty())
-    {
-      int f = q.front();
-      cout << f << endl;
-      q.pop();
-
-      for (auto nbr : l[f])
-      {
-        if (!visited[nbr])
-        {
-          q.push(nbr);
-          visited[nbr] = true;
-        }
-      }
-    }
+    dfsHelper(source, visited);
   }
 };
 
@@ -61,7 +57,7 @@ int main()
   g.addEdge(4, 5);
   g.addEdge(0, 4);
   g.addEdge(3, 4);
-  g.bfs(1);
+  g.dfs(1);
 
   return 0;
 }
